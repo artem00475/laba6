@@ -296,9 +296,9 @@ public class ConsoleManager {
                 } catch (NumberFormatException e) {
                     throw new IdException("Введено нечисловое значение");
                 }
-                if (!Person.getIdArray().contains(id)){
-                    throw new IdException("Элемента с таким id нет в коллекции");
-                }
+                //if (!Person.getIdArray().contains(id)){
+                    //throw new IdException("Элемента с таким id нет в коллекции");
+               // }
                 break;
             }catch (IdException e) {
                 System.out.println("Введите значение id снова: ");

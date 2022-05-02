@@ -2,10 +2,12 @@ package person;
 
 import exceptions.CoordinatesException;
 
+import java.io.Serializable;
+
 /**
  * Класс, описывающий координаты Х и Y
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
     private Integer x; //Максимальное значение поля: 408, Поле не может быть null
     private Integer y; //Значение поля должно быть больше -876, Поле не может быть null
 

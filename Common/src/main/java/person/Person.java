@@ -2,6 +2,7 @@ package person;
 
 import exceptions.IdException;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ import java.util.LinkedList;
  * Класс, описывающий человека
  * Объекты класса являются элементами коллекции
  */
-public class Person {
+public class Person implements Serializable {
     private static Integer uniqueID=1;
     private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой

@@ -2,7 +2,7 @@ import java.io.Serializable;
 
 public class Request implements Serializable {
     private String name;
-    private int id= Integer.parseInt(null);
+    private int id= -1;
     private Object object=null;
     public Request(String name){
         this.name=name;
@@ -19,6 +19,18 @@ public class Request implements Serializable {
     public Request(String name, int id){
         this.id=id;
         this.name=name;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public Object getObject(){
+        return object;
+    }
+
+    public int getId(){
+        return id;
     }
 
 }

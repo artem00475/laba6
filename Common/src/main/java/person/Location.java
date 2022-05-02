@@ -1,9 +1,11 @@
 package person;
 
+import java.io.Serializable;
+
 /**
  * Класс, описывающий местоположение
  */
-public class Location {
+public class Location implements Serializable {
     private Integer x; //Поле не может быть null
     private Double y; //Поле не может быть null
     private Long z; //Поле не может быть null
