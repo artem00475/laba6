@@ -2,11 +2,21 @@ import commands.CommandManager;
 import person.Location;
 import person.Person;
 
+import java.io.IOException;
+
 public class ClientCommandManager implements CommandManager {
     ConsoleManager consoleManager = new ConsoleManager();
     public void execute(String name,boolean hasArgument){
         if (!hasArgument){
             Client.sendManager.send(new Request(name));
+            try {
+                System.out.println(Client.recieveManager.recieve().getString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
         }
         else {
             if (name.equals("add")||name.equals("add_if_max")||name.equals("remove_greater")){
