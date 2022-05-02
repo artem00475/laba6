@@ -1,4 +1,6 @@
 /Common/Common.iml
 /Client/Client.iml
 /Server/Server.iml
-
+/Client/src/test
+/Server/src/test
+/Common/src/test
