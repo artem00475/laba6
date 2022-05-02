@@ -7,15 +7,17 @@ import java.net.DatagramSocket;
 public class SendManager {
     private byte[] buffer;
     private DatagramSocket datagramSocket;
+    private RecieveManager recieveManager;
 
-    public SendManager (DatagramSocket datagramSocket){
+    public SendManager (DatagramSocket datagramSocket,RecieveManager recieveManager){
         this.datagramSocket = datagramSocket;
+        this.recieveManager=recieveManager;
     }
 
     public void sendAnswer(String string, boolean wasErrors) throws IOException {
         Answer answer = new Answer(string,wasErrors);
         buffer = serialize(answer);
-        DatagramPacket output = new DatagramPacket(buffer,buffer.length,Server.recieveManager.getAdress(),Server.recieveManager.getPort());
+        DatagramPacket output = new DatagramPacket(buffer,buffer.length,recieveManager.getAdress(),recieveManager.getPort());
         datagramSocket.send(output);
     }
 

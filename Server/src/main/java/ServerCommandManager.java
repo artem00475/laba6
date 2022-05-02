@@ -1,19 +1,58 @@
+import collection.CollectionManager;
 import commands.CommandManager;
+import person.Person;
 
 import java.io.IOException;
 
 public class ServerCommandManager implements CommandManager {
     private boolean wasErrors=false;
+    private SendManager sendManager;
+    private CollectionManager collectionManager;
 
-    public void execute(String name,boolean hasArgument){
-        if (!hasArgument){
-            if (name.equals("help")){
+    public ServerCommandManager(SendManager sendManager,CollectionManager collectionManager){
+        this.sendManager=sendManager;
+        this.collectionManager=collectionManager;
+    }
+
+    public void execute(String name,boolean hasArgument) {
+        if (!hasArgument) {
+            if (name.equals("help")) {
                 try {
-                    Server.sendManager.sendAnswer(helpCommand(),wasErrors);
+                    sendManager.sendAnswer(helpCommand(), wasErrors);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
+            } else if (name.equals("info")) {
+                try {
+                    sendManager.sendAnswer(infoCommand(), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (name.equals("show")) {
+                try {
+                    sendManager.sendAnswer(showCommand(), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (name.equals("clear")) {
+                try {
+                    sendManager.sendAnswer(clearCommand(), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (name.equals("remove_head")){
+                try {
+                    sendManager.sendAnswer(removeHeadCommand(), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (name.equals("print_field_ascending_location")){
+                try {
+                    sendManager.sendAnswer(printFieldAscendingLocationCommand(), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -36,5 +75,51 @@ public class ServerCommandManager implements CommandManager {
         stringBuilder.append("filter_less_than_eye_color eyeColor : вывести элементы, значение поля eyeColor которых меньше заданного\n");
         stringBuilder.append("print_field_ascending_location : вывести значения поля location всех элементов в порядке возрастания\n");
         return stringBuilder.toString();
+    }
+
+    public String infoCommand(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Информация о коллекции:\n");
+        stringBuilder.append("Коллекция типа PriorityQueue, в которой хранятся объекты класса Person\n");
+        stringBuilder.append("Дата инициализации: "+collectionManager.getInitDate()+"\n");
+        stringBuilder.append("Количестов элементов: "+collectionManager.getCollection().size()+"\n");
+        return stringBuilder.toString();
+    }
+
+    public String showCommand(){
+        StringBuilder stringBuilder = new StringBuilder();
+        if (collectionManager.getCollection().isEmpty()) {
+            stringBuilder.append("Нельзя выполнить команду show: коллекция пустая\n");
+        } else {
+            stringBuilder.append("Все элементы коллекции: \n");
+            for (Person person : collectionManager.getCollection()) {
+                stringBuilder.append(person+"\n");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    public String clearCommand(){
+        collectionManager.removeAll();
+        return "Коллекция очищена";
+    }
+
+    public String removeHeadCommand() {
+        if (collectionManager.getCollection().isEmpty()) {
+            return "Коллекция пуста";
+        } else {
+            return collectionManager.removeFirstElement().toString();
+        }
+    }
+
+    public String printFieldAscendingLocationCommand(){
+        StringBuilder stringBuilder = new StringBuilder();
+        if (collectionManager.getCollection().isEmpty()) {
+            return "Коллекция пуста";
+        } else {
+            for (Person person : collectionManager.sortByLocation()){
+                stringBuilder.append(person.getLocation()+"\n");
+            }
+        }return stringBuilder.toString();
     }
 }
