@@ -1,6 +1,6 @@
 package person;
 
-import ru.itmo.lab5.exceptions.IdException;
+import exceptions.IdException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +21,7 @@ public class Person {
     private ColorH hairColor; //Поле не может быть null
     private Country nationality; //Поле может быть null
     private Location location; //Поле может быть null
-    private static final LinkedList<Integer> idArray = new LinkedList<>();
+    private static final LinkedList<Integer> idArray = new LinkedList();
 
 
     /**
@@ -202,7 +202,7 @@ public class Person {
      * @return fields список с полями
      */
     public LinkedList<String> getPersonFields(){
-        LinkedList<String> fields= new LinkedList<>();
+        LinkedList<String> fields= new LinkedList();
         fields.add(String.valueOf(id));
         fields.add(name);
         fields.add(String.valueOf(coordinates.getX()));

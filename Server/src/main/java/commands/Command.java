@@ -26,5 +26,5 @@ public interface Command {
      * Запускает выполнение команды
      * @param argument аргумент команды (если есть)
      */
-    void execute(Boolean argument, CommandManager commandManager);
+    void execute(Boolean argument);
 }

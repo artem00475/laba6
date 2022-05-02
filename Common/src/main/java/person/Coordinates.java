@@ -1,6 +1,6 @@
 package person;
 
-import ru.itmo.lab5.exceptions.CoordinatesException;
+import exceptions.CoordinatesException;
 
 /**
  * Класс, описывающий координаты Х и Y
