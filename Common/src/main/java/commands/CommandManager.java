@@ -1,5 +1,5 @@
 package commands;
 
 public interface CommandManager {
-    void execute(String name, boolean hasArgument);
+    void execute(Command command, boolean hasArgument);
 }

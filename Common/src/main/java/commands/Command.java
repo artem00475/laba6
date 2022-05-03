@@ -1,9 +1,11 @@
 package commands;
 
+import java.io.Serializable;
+
 /**
  * Интерфейс, описывающий поведение команд
  */
-public interface Command {
+public interface Command extends Serializable {
     /**
      * Возвращает имя команды
      * @return имя команды

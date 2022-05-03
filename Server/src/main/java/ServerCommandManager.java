@@ -1,4 +1,5 @@
 import collection.CollectionManager;
+import commands.Command;
 import commands.CommandManager;
 import person.Person;
 
@@ -14,40 +15,40 @@ public class ServerCommandManager implements CommandManager {
         this.collectionManager=collectionManager;
     }
 
-    public void execute(String name,boolean hasArgument) {
+    public void execute(Command command, boolean hasArgument) {
         if (!hasArgument) {
-            if (name.equals("help")) {
+            if (command.getName().equals("help")) {
                 try {
                     sendManager.sendAnswer(helpCommand(), wasErrors);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-            } else if (name.equals("info")) {
+            } else if (command.getName().equals("info")) {
                 try {
                     sendManager.sendAnswer(infoCommand(), wasErrors);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if (name.equals("show")) {
+            } else if (command.getName().equals("show")) {
                 try {
                     sendManager.sendAnswer(showCommand(), wasErrors);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if (name.equals("clear")) {
+            } else if (command.getName().equals("clear")) {
                 try {
                     sendManager.sendAnswer(clearCommand(), wasErrors);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }else if (name.equals("remove_head")){
+            }else if (command.getName().equals("remove_head")){
                 try {
                     sendManager.sendAnswer(removeHeadCommand(), wasErrors);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }else if (name.equals("print_field_ascending_location")){
+            }else if (command.getName().equals("print_field_ascending_location")){
                 try {
                     sendManager.sendAnswer(printFieldAscendingLocationCommand(), wasErrors);
                 } catch (IOException e) {

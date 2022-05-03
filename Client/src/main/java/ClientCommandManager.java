@@ -1,3 +1,4 @@
+import commands.Command;
 import commands.CommandManager;
 import person.Location;
 import person.Person;
@@ -6,9 +7,9 @@ import java.io.IOException;
 
 public class ClientCommandManager implements CommandManager {
     ConsoleManager consoleManager = new ConsoleManager();
-    public void execute(String name,boolean hasArgument){
+    public void execute(Command command, boolean hasArgument){
         if (!hasArgument){
-            Client.sendManager.send(new Request(name));
+            Client.sendManager.send(new Request(command));
             try {
                 System.out.println(Client.recieveManager.recieve().getString());
             } catch (IOException e) {
@@ -19,23 +20,23 @@ public class ClientCommandManager implements CommandManager {
 
         }
         else {
-            if (name.equals("add")||name.equals("add_if_max")||name.equals("remove_greater")){
+            if (command.getName().equals("add")||command.getName().equals("add_if_max")||command.getName().equals("remove_greater")){
                 Person person = consoleManager.getPersonFromConsole(Client.scanner);
-                Client.sendManager.send(new Request(name,person));
+                Client.sendManager.send(new Request(command,person));
             }
-            else if (name.equals("remove_by_id")){
-                Client.sendManager.send(new Request(name,consoleManager.getID(Client.scanner)));
+            else if (command.getName().equals("remove_by_id")){
+                Client.sendManager.send(new Request(command,consoleManager.getID(Client.scanner)));
             }
-            else if (name.equals("update")){
+            else if (command.getName().equals("update")){
                 Person person = consoleManager.getPersonFromConsole(Client.scanner);
-                Client.sendManager.send(new Request(name,consoleManager.getID(Client.scanner),person));
+                Client.sendManager.send(new Request(command,consoleManager.getID(Client.scanner),person));
             }
-            else if (name.equals("count_greater_than_location")){
+            else if (command.getName().equals("count_greater_than_location")){
                 Location location = consoleManager.getLocationFromConsole(Client.scanner);
-                Client.sendManager.send(new Request(name,location));
+                Client.sendManager.send(new Request(command,location));
             }
-            else if (name.equals("filter_less_than_eye_color")){
-                Client.sendManager.send(new Request(name,consoleManager.getEyeColor(Client.scanner)));
+            else if (command.getName().equals("filter_less_than_eye_color")){
+                Client.sendManager.send(new Request(command,consoleManager.getEyeColor(Client.scanner)));
             }
 
         }
