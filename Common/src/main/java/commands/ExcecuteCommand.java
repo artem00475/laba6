@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 import java.io.File;
 import java.util.Deque;
 
@@ -25,6 +27,6 @@ public class ExcecuteCommand implements Command {
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new ExcecuteCommand(),hasArgement());
+        commandManager.execute(new Request(new ExcecuteCommand()));
     }
 }

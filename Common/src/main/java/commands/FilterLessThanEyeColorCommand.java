@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, выводящая элементы, значение которых меньше заданного
  */
@@ -22,6 +24,6 @@ public class FilterLessThanEyeColorCommand implements Command {
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new FilterLessThanEyeColorCommand(),hasArgement());
+        commandManager.execute(new Request(new FilterLessThanEyeColorCommand()));
     }
 }

@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, выводящая информацию о коллекции
  */
@@ -22,6 +24,6 @@ public class InfoCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new InfoCommand(),hasArgement());
+        commandManager.execute(new Request(new InfoCommand()));
     }
 }

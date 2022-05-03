@@ -1,3 +1,4 @@
+import Messages.Request;
 import collection.CollectionManager;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class ServerManager {
     public void run() throws IOException, ClassNotFoundException {
         while (true){
             Request request = recieveManager.recieveRequest();
-            serverCommandManager.execute(request.getCommand(),false);
+            serverCommandManager.execute(request);
         }
     }
 

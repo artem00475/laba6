@@ -1,3 +1,5 @@
+package Messages;
+
 import commands.Command;
 
 import java.io.Serializable;

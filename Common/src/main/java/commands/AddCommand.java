@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, добавляющая элемент в коллекцию
  */
@@ -22,6 +24,6 @@ public class AddCommand implements Command {
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new AddCommand(),hasArgement());
+        commandManager.execute(new Request(new AddCommand()));
     }
 }

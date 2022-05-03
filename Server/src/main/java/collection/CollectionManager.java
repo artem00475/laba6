@@ -82,38 +82,41 @@ public class CollectionManager {
      * @param id id элемента
      * @param p объект класса {@link Person}
      */
-    public void updateElement(int id, Person p){
+    public boolean updateElement(int id, Person p){
         Queue<Person> collection1 = new PriorityQueue<>(1,new PersonComporator());
         while (!collection.isEmpty()){
             Person person = collection.remove();
             if (person.getID() == id){
                 person.setName(p.getName());
                 person.setCoordinates(p.getCoordinates());
+                person.setHeight(p.getHeight());
                 person.setEyeColor(p.getEyeColor());
                 person.setHairColor(p.getHairColor());
                 person.setNationality(p.getNationality());
                 person.setLocation(p.getLocation());
                 collection.add(person);
                 collection.addAll(collection1);
-                break;
+                return true;
             }else{
                 collection1.add(person);
             }
 
-        }
+        }collection.addAll(collection1);
+        return false;
     }
 
     /**
      * Удаляет элемент из коллекции по id
      * @param id id элемента
      */
-    public void removeElementByID(int id){
+    public boolean removeElementByID(int id){
         for (Person person : collection){
             if (person.getID() == id){
                 collection.remove(person);
                 Person.removeFromIdArray(id);
+                return true;
             }
-        }
+        }return false;
     }
 
     /**

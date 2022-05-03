@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, удаляющая элемент по id
  */
@@ -22,6 +24,6 @@ public class RemoveByIdCommand implements Command {
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new RemoveByIdCommand(),hasArgement());
+        commandManager.execute(new Request(new RemoveByIdCommand()));
     }
 }

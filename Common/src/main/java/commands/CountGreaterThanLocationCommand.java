@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, выводящая количество элементов, значение которых больше заданного
  */
@@ -22,6 +24,6 @@ public class CountGreaterThanLocationCommand implements Command {
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new CountGreaterThanLocationCommand(),hasArgement());
+        commandManager.execute(new Request(new CountGreaterThanLocationCommand()));
     }
 }

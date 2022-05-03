@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, выводящая значения поля location в порядке возрастания
  */
@@ -22,6 +24,6 @@ public class PrintFieldAscendingLocationCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new PrintFieldAscendingLocationCommand(),hasArgement());
+        commandManager.execute(new Request(new PrintFieldAscendingLocationCommand()));
     }
 }

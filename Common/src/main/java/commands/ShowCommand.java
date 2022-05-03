@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, выводящая все элементы коллекции
  */
@@ -22,7 +24,7 @@ public class ShowCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new ShowCommand(),hasArgement());
+        commandManager.execute(new Request(new ShowCommand()));
     }
 
 

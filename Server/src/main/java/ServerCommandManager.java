@@ -1,6 +1,9 @@
+import Messages.Request;
 import collection.CollectionManager;
 import commands.Command;
 import commands.CommandManager;
+import person.ColorE;
+import person.Location;
 import person.Person;
 
 import java.io.IOException;
@@ -15,8 +18,9 @@ public class ServerCommandManager implements CommandManager {
         this.collectionManager=collectionManager;
     }
 
-    public void execute(Command command, boolean hasArgument) {
-        if (!hasArgument) {
+    public void execute(Request request) {
+        Command command = request.getCommand();
+        if (!command.hasArgement()) {
             if (command.getName().equals("help")) {
                 try {
                     sendManager.sendAnswer(helpCommand(), wasErrors);
@@ -51,6 +55,50 @@ public class ServerCommandManager implements CommandManager {
             }else if (command.getName().equals("print_field_ascending_location")){
                 try {
                     sendManager.sendAnswer(printFieldAscendingLocationCommand(), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            if (command.getName().equals("add")){
+                try {
+                    sendManager.sendAnswer(addCommand((Person) request.getObject()), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (command.getName().equals("add_if_max")){
+                try {
+                    sendManager.sendAnswer(addIfMaxCommand((Person) request.getObject()), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (command.getName().equals("remove_greater")){
+                try {
+                    sendManager.sendAnswer(removeGreaterCommand((Person) request.getObject()), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (command.getName().equals("remove_by_id")){
+                try {
+                    sendManager.sendAnswer(removeByIdCommand(request.getId()), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (command.getName().equals("update id")){
+                try {
+                    sendManager.sendAnswer(updateCommand(request.getId(), (Person) request.getObject()), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (command.getName().equals("count_greater_than_location")){
+                try {
+                    sendManager.sendAnswer(countGreaterThanLocationCommand((Location) request.getObject()), wasErrors);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if (command.getName().equals("filter_less_than_eye_color")){
+                try {
+                    sendManager.sendAnswer(filterLessThanEyeColorCommand((ColorE) request.getObject()), wasErrors);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -123,4 +171,58 @@ public class ServerCommandManager implements CommandManager {
             }
         }return stringBuilder.toString();
     }
+
+    public String addCommand(Person person){
+        collectionManager.addElement(createPerson(person));
+        return "Элемент успешно добавлен";
+   }
+
+   public String addIfMaxCommand(Person person){
+       if (collectionManager.ifMore(person)) {
+           collectionManager.addElement(createPerson(person));
+           return "Элемент успешно добавлен";
+       } else {
+           return "Значение элемента не превышает наибольшего элемента коллекции";
+       }
+   }
+
+   public String removeGreaterCommand(Person person){
+       if (collectionManager.removeGreater(person)){
+           return "Элементы успешно удалены";
+       } else {
+           return "В коллекции нет элементов, удовлетворяющих условию";
+       }
+   }
+
+   public String removeByIdCommand(int id){
+       if (collectionManager.removeElementByID(id)) {
+           return "Элемент успешно удалён.";
+       }else {return "Элемента с таким id нет в коллекции";}
+   }
+
+   public String updateCommand(int id, Person person){
+        if (collectionManager.updateElement(id,person)){
+            return "Элемент успешно обговлен";
+        }else {
+            return "Элемента с таким id нет в коллекции";}
+        }
+
+   public String countGreaterThanLocationCommand(Location location){
+        return "Количество элементов, значение поля location которых больше заданного - " + collectionManager.countGreaterLocation(location);
+
+   }
+
+   public String filterLessThanEyeColorCommand(ColorE colorE){
+        StringBuilder stringBuilder = new StringBuilder();
+       for (Person person : collectionManager.filterLessThanEyeColor(colorE)) {
+           stringBuilder.append(person.toString()+"\n");
+       }
+       if (stringBuilder.length()==0){
+           return "Таких элементов нет";
+       }else {return stringBuilder.toString();}
+   }
+
+   public Person createPerson(Person person){
+        return new Person(person.getName(),person.getCoordinates().getX(),person.getCoordinates().getY(),person.getHeight(),person.getEyeColor(),person.getHairColor(),person.getNationality(),person.getLocation().getX(),person.getLocation().getY(),person.getLocation().getZ(),person.getLocation().getName());
+   }
 }

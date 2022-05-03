@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, удаляющая элементы, превышающие заданный
  */
@@ -22,6 +24,6 @@ public class RemoveGreaterCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new RemoveGreaterCommand(),hasArgement());
+        commandManager.execute(new Request(new RemoveGreaterCommand()));
     }
 }

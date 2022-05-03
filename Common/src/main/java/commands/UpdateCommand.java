@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, обновляющая элемент по id
  */
@@ -22,6 +24,6 @@ public class UpdateCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new UpdateCommand(),hasArgement());
+        commandManager.execute(new Request(new UpdateCommand()));
     }
 }

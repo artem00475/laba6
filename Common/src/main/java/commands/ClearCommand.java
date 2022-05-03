@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 /**
  * Команда, очищающая коллекцию
  */
@@ -22,6 +24,6 @@ public class ClearCommand implements Command {
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new ClearCommand(),hasArgement());
+        commandManager.execute(new Request(new ClearCommand()));
     }
 }

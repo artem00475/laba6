@@ -1,6 +1,7 @@
 package commands;
 
 
+import Messages.Request;
 
 /**
  * Команда, добавляющая элемент, если он больше максимального
@@ -24,6 +25,6 @@ public class AddIfMaxCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new AddIfMaxCommand(),hasArgement());
+        commandManager.execute(new Request(new AddIfMaxCommand()));
     }
 }

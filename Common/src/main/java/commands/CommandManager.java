@@ -1,5 +1,7 @@
 package commands;
 
+import Messages.Request;
+
 public interface CommandManager {
-    void execute(Command command, boolean hasArgument);
+    void execute(Request request);
 }
