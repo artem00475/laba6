@@ -1,5 +1,7 @@
 import commands.*;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -23,8 +25,10 @@ public class ClientManager {
     private String com;
     private boolean ifConsole;
     private ClientCommandManager clientCommandManager;
-    public ClientManager(){
-        clientCommandManager = new ClientCommandManager();
+    private Deque<String> scriptQueue = new LinkedList<>();
+
+    public ClientManager() {
+        clientCommandManager = new ClientCommandManager(scriptQueue);
     }
 
     public void consoleMode() {
@@ -34,7 +38,7 @@ public class ClientManager {
             System.out.print("Введите команду (help - список команд): ");
             try {
                 com = Client.scanner.nextLine();
-            }catch (NoSuchElementException e) {
+            } catch (NoSuchElementException e) {
                 System.out.println("\nВы вышли из программы");
                 break;
             }
@@ -45,13 +49,11 @@ public class ClientManager {
                     for (Command command : commands) {
                         if (com.equals(command.getName())) {
                             found = true;
-                            //if (com.equals("execute_script")) {
-                               // scriptManager.createScriptFlesArray();
-                               // command.execute(ifConsole);
-                                //scriptMode();
-                                //ifConsole=true;
-                           // }
-                            command.execute(false,clientCommandManager);
+                            command.execute(ifConsole, clientCommandManager);
+                            if (com.equals("execute_script")) {
+                                scriptMode();
+                                ifConsole = true;
+                            }
                         }
                     }
                 } catch (NoSuchElementException e) {
@@ -60,6 +62,27 @@ public class ClientManager {
                 }
                 if (!found) {
                     System.out.println("Команда введениа неверно, или такой команды не существует");
+                }
+            }
+        }
+    }
+
+    public void scriptMode() {
+        ifConsole = false;
+        while (!scriptQueue.isEmpty()) {
+            String com = scriptQueue.removeFirst();
+            if (com.equals("stop")) {
+                System.out.println("Скрипт выполнен");
+                break;
+            } else {
+                for (Command command : commands) {
+                    if (com.equals(command.getName())) {
+                        if (!command.hasArgement()) {
+                            command.execute(true,clientCommandManager);
+                        } else {
+                            command.execute(ifConsole,clientCommandManager);
+                        }
+                    }
                 }
             }
         }

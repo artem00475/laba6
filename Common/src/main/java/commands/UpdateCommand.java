@@ -24,6 +24,6 @@ public class UpdateCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new UpdateCommand()));
+        commandManager.execute(new Request(new UpdateCommand()),argument);
     }
 }

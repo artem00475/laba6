@@ -27,6 +27,6 @@ public class ExcecuteCommand implements Command {
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new ExcecuteCommand()));
+        commandManager.execute(new Request(new ExcecuteCommand()),argument);
     }
 }

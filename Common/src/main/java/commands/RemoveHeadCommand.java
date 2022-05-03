@@ -24,6 +24,6 @@ public class RemoveHeadCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new RemoveHeadCommand()));
+        commandManager.execute(new Request(new RemoveHeadCommand()),argument);
     }
 }

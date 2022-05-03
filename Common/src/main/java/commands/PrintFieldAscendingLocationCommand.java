@@ -24,6 +24,6 @@ public class PrintFieldAscendingLocationCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new PrintFieldAscendingLocationCommand()));
+        commandManager.execute(new Request(new PrintFieldAscendingLocationCommand()),argument);
     }
 }

@@ -24,6 +24,6 @@ public class RemoveGreaterCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new RemoveGreaterCommand()));
+        commandManager.execute(new Request(new RemoveGreaterCommand()),argument);
     }
 }

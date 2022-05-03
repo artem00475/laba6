@@ -2,6 +2,8 @@
 import person.*;
 import exceptions.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -276,6 +278,20 @@ public class ConsoleManager {
             }catch (LocationException ignored) {}
         }
         return locationName;
+    }
+
+    public File getFile(Scanner scanner) {
+        while (true){
+            System.out.println("Введите имя файла: ");
+            String path = scanner.nextLine();
+            try{
+            if (path.isEmpty()){throw new FileException("Ничего не введено");}
+            File file = new File(path);
+            if (!file.isFile()){throw new FileException("Это не файл");}
+            if (!file.canRead()){throw new FileException("Нет доступа к файлу");}
+            return file;
+            }catch (FileException e){}
+        }
     }
 
     /**

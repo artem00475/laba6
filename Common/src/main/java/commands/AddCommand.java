@@ -24,6 +24,6 @@ public class AddCommand implements Command {
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new AddCommand()));
+        commandManager.execute(new Request(new AddCommand()),argument);
     }
 }

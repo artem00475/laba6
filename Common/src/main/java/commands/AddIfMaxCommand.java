@@ -25,6 +25,6 @@ public class AddIfMaxCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new AddIfMaxCommand()));
+        commandManager.execute(new Request(new AddIfMaxCommand()),argument);
     }
 }

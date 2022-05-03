@@ -18,7 +18,7 @@ public class ServerCommandManager implements CommandManager {
         this.collectionManager=collectionManager;
     }
 
-    public void execute(Request request) {
+    public void execute(Request request,boolean argument) {
         Command command = request.getCommand();
         if (!command.hasArgement()) {
             if (command.getName().equals("help")) {

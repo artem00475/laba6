@@ -24,6 +24,6 @@ public class InfoCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new InfoCommand()));
+        commandManager.execute(new Request(new InfoCommand()),argument);
     }
 }

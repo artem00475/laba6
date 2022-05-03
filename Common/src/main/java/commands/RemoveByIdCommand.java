@@ -24,6 +24,6 @@ public class RemoveByIdCommand implements Command {
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new RemoveByIdCommand()));
+        commandManager.execute(new Request(new RemoveByIdCommand()),argument);
     }
 }

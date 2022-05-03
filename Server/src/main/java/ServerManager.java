@@ -18,7 +18,7 @@ public class ServerManager {
     public void run() throws IOException, ClassNotFoundException {
         while (true){
             Request request = recieveManager.recieveRequest();
-            serverCommandManager.execute(request);
+            serverCommandManager.execute(request,false);
         }
     }
 

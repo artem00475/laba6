@@ -23,6 +23,6 @@ public class HelpCommand implements Command{
 
     @Override
     public void execute(Boolean argument, CommandManager commandManager) {
-        commandManager.execute(new Request(new HelpCommand()));
+        commandManager.execute(new Request(new HelpCommand()),argument);
     }
 }
