@@ -82,9 +82,6 @@ public class ServerCommandManager implements CommandManager {
         } else {
             stringBuilder.append("Все элементы коллекции: \n");
             collectionManager.getCollection().forEach(person -> stringBuilder.append(person).append("\n"));
-//            for (Person person : collectionManager.getCollection()) {
-//                stringBuilder.append(person+"\n");
-//            }
         }
         return stringBuilder.toString();
     }
@@ -107,10 +104,7 @@ public class ServerCommandManager implements CommandManager {
         if (collectionManager.getCollection().isEmpty()) {
             return "Коллекция пуста";
         } else {collectionManager.sortByLocation().forEach(person -> stringBuilder.append(person.getLocation()).append("\n"));
-//            for (Person person : collectionManager.sortByLocation()){
-//                stringBuilder.append(person.getLocation()+"\n");
-//            }
-        }return stringBuilder.toString();
+        } return stringBuilder.toString();
     }
 
     public String addCommand(Person person){
@@ -156,9 +150,6 @@ public class ServerCommandManager implements CommandManager {
    public String filterLessThanEyeColorCommand(ColorE colorE){
         StringBuilder stringBuilder = new StringBuilder();
         collectionManager.filterLessThanEyeColor(colorE).forEach(person -> stringBuilder.append(person.toString()).append("\n"));
-//       for (Person person : collectionManager.filterLessThanEyeColor(colorE)) {
-//           stringBuilder.append(person.toString()+"\n");
-//       }
        if (stringBuilder.length()==0){
            return "Таких элементов нет";
        }else {return stringBuilder.toString();}

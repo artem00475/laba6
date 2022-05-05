@@ -1,7 +1,6 @@
 package collection;
 
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import file.FileManager;
 import person.*;
 
@@ -9,11 +8,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
-import java.util.function.DoubleToIntFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -100,27 +97,6 @@ public class CollectionManager {
             collection.add(person1);
             return true;
         }catch (NullPointerException e){return false;}
-
-//        Queue<Person> collection1 = new PriorityQueue<>(1,new PersonComporator());
-//        while (!collection.isEmpty()){
-//            Person person = collection.remove();
-//            if (person.getID() == id){
-//                person.setName(p.getName());
-//                person.setCoordinates(p.getCoordinates());
-//                person.setHeight(p.getHeight());
-//                person.setEyeColor(p.getEyeColor());
-//                person.setHairColor(p.getHairColor());
-//                person.setNationality(p.getNationality());
-//                person.setLocation(p.getLocation());
-//                collection.add(person);
-//                collection.addAll(collection1);
-//                return true;
-//            }else{
-//                collection1.add(person);
-//            }
-//
-//        }collection.addAll(collection1);
-//        return false;
     }
 
     /**
@@ -129,13 +105,6 @@ public class CollectionManager {
      */
     public boolean removeElementByID(int id){
         return collection.remove(collection.stream().filter(person -> person.getID()==id).findFirst().orElse(null));
-//        for (Person person : collection){
-//            if (person.getID() == id){
-//                collection.remove(person);
-//                Person.removeFromIdArray(id);
-//                return true;
-//            }
-//        return false;
     }
 
     /**
@@ -173,12 +142,6 @@ public class CollectionManager {
     public boolean ifMore(Person person){
         if (collection.isEmpty()){return true;}
          return collection.stream().max(new PersonComporator()).get().getHeight().compareTo(person.getHeight())<0;
-//        Double h = 0.0;
-//        for (Person p : collection){
-//            h=p.getHeight();
-//        }
-//        return person.getHeight() > h;
-
     }
 
     /**
@@ -188,17 +151,6 @@ public class CollectionManager {
      */
     public boolean removeGreater(Person person){
         return collection.stream().filter(person1 -> person1.getHeight()<person.getHeight()).toArray().length>0;
-//        boolean found = false;
-//        Double h = person.getHeight();
-//        Queue<Person> collection1 = new PriorityQueue<>(1, new PersonComporator());
-//        for (Person p : collection){
-//            if (h<p.getHeight()){
-//                Person.removeFromIdArray(p.getID());
-//                collection1.add(p);
-//                found=true;
-//            }
-//        } collection.removeAll(collection1);
-//        return found;
     }
 
     /**
@@ -208,13 +160,6 @@ public class CollectionManager {
      */
     public int countGreaterLocation(Location location){
         return Integer.parseInt(Long.toString(collection.stream().filter(person -> person.getLocation().compare(location)).count()));
-//        int count = 0;
-//        for (Person person : collection){
-//            if (person.getLocation().compare(location)){
-//                count++;
-//            }
-//        }
-//        return count;
     }
 
     /**
@@ -223,9 +168,6 @@ public class CollectionManager {
      */
     public Queue<Person> sortByLocation(){
         return collection.stream().sorted(new LocationComporator()).collect(Collectors.toCollection(PriorityQueue<Person> :: new));
-//        Queue<Person> collection1 = new PriorityQueue<>(1,new LocationComporator());
-//        collection1.addAll(collection);
-//        return collection1;
     }
 
     /**
@@ -235,11 +177,5 @@ public class CollectionManager {
      */
     public Queue<Person> filterLessThanEyeColor(ColorE eyeColor){
         return collection.stream().filter(person -> person.getEyeColor().compareTo(eyeColor)<0).collect(Collectors.toCollection(PriorityQueue<Person>::new));
-//        Queue<Person> collection1 = new PriorityQueue<>(1,new PersonComporator());
-//        for (Person person : collection){
-//            if (person.getEyeColor().compareTo(eyeColor)<0){
-//                collection1.add(person);
-//            }
-//        }return collection1;
     }
 }

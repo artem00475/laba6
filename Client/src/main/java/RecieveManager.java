@@ -18,7 +18,7 @@ public class RecieveManager {
     public Answer recieve() throws IOException, ClassNotFoundException {
         byte[] buffer = new byte[1024*1024];
         DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
-        datagramChannel.socket().setSoTimeout(1000);
+        datagramChannel.socket().setSoTimeout(10000);
         datagramChannel.socket().receive(datagramPacket);
         byte[] bytes = datagramPacket.getData();
         Answer answer = (Answer) deserialize(bytes);
