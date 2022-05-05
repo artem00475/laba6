@@ -8,9 +8,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * Класс, работающий с коллекцией
@@ -83,26 +85,40 @@ public class CollectionManager {
      * @param p объект класса {@link Person}
      */
     public boolean updateElement(int id, Person p){
-        Queue<Person> collection1 = new PriorityQueue<>(1,new PersonComporator());
-        while (!collection.isEmpty()){
-            Person person = collection.remove();
-            if (person.getID() == id){
-                person.setName(p.getName());
-                person.setCoordinates(p.getCoordinates());
-                person.setHeight(p.getHeight());
-                person.setEyeColor(p.getEyeColor());
-                person.setHairColor(p.getHairColor());
-                person.setNationality(p.getNationality());
-                person.setLocation(p.getLocation());
-                collection.add(person);
-                collection.addAll(collection1);
-                return true;
-            }else{
-                collection1.add(person);
-            }
+        Person person1 = collection.stream().filter(person -> person.getID()==id).findFirst().orElse(null);
+        try {
+            collection.remove(person1);
+            person1.setName(p.getName());
+            person1.setCoordinates(p.getCoordinates());
+            person1.setHeight(p.getHeight());
+            person1.setEyeColor(p.getEyeColor());
+            person1.setHairColor(p.getHairColor());
+            person1.setNationality(p.getNationality());
+            person1.setLocation(p.getLocation());
+            collection.add(person1);
+            return true;
+        }catch (NullPointerException e){return false;}
 
-        }collection.addAll(collection1);
-        return false;
+//        Queue<Person> collection1 = new PriorityQueue<>(1,new PersonComporator());
+//        while (!collection.isEmpty()){
+//            Person person = collection.remove();
+//            if (person.getID() == id){
+//                person.setName(p.getName());
+//                person.setCoordinates(p.getCoordinates());
+//                person.setHeight(p.getHeight());
+//                person.setEyeColor(p.getEyeColor());
+//                person.setHairColor(p.getHairColor());
+//                person.setNationality(p.getNationality());
+//                person.setLocation(p.getLocation());
+//                collection.add(person);
+//                collection.addAll(collection1);
+//                return true;
+//            }else{
+//                collection1.add(person);
+//            }
+//
+//        }collection.addAll(collection1);
+//        return false;
     }
 
     /**
@@ -110,13 +126,14 @@ public class CollectionManager {
      * @param id id элемента
      */
     public boolean removeElementByID(int id){
-        for (Person person : collection){
-            if (person.getID() == id){
-                collection.remove(person);
-                Person.removeFromIdArray(id);
-                return true;
-            }
-        }return false;
+        return collection.remove(collection.stream().filter(person -> person.getID()==id).findFirst().orElse(null));
+//        for (Person person : collection){
+//            if (person.getID() == id){
+//                collection.remove(person);
+//                Person.removeFromIdArray(id);
+//                return true;
+//            }
+//        return false;
     }
 
     /**
@@ -152,11 +169,12 @@ public class CollectionManager {
      */
     public boolean ifMore(Person person){
         if (collection.isEmpty()){return true;}
-        Double h = 0.0;
-        for (Person p : collection){
-            h=p.getHeight();
-        }
-        return person.getHeight() > h;
+         return collection.stream().max(new PersonComporator()).get().getHeight().compareTo(person.getHeight())<0;
+//        Double h = 0.0;
+//        for (Person p : collection){
+//            h=p.getHeight();
+//        }
+//        return person.getHeight() > h;
 
     }
 
@@ -166,17 +184,18 @@ public class CollectionManager {
      * @return {@code true} если нужные элементы есть, иначе {@code false}
      */
     public boolean removeGreater(Person person){
-        boolean found = false;
-        Double h = person.getHeight();
-        Queue<Person> collection1 = new PriorityQueue<>(1, new PersonComporator());
-        for (Person p : collection){
-            if (h<p.getHeight()){
-                Person.removeFromIdArray(p.getID());
-                collection1.add(p);
-                found=true;
-            }
-        } collection.removeAll(collection1);
-        return found;
+        return collection.stream().filter(person1 -> person1.getHeight()<person.getHeight()).toArray().length>0;
+//        boolean found = false;
+//        Double h = person.getHeight();
+//        Queue<Person> collection1 = new PriorityQueue<>(1, new PersonComporator());
+//        for (Person p : collection){
+//            if (h<p.getHeight()){
+//                Person.removeFromIdArray(p.getID());
+//                collection1.add(p);
+//                found=true;
+//            }
+//        } collection.removeAll(collection1);
+//        return found;
     }
 
     /**
@@ -185,13 +204,14 @@ public class CollectionManager {
      * @return количество элементов
      */
     public int countGreaterLocation(Location location){
-        int count = 0;
-        for (Person person : collection){
-            if (person.getLocation().compare(location)){
-                count++;
-            }
-        }
-        return count;
+        return Integer.parseInt(Long.toString(collection.stream().filter(person -> person.getLocation().compare(location)).count()));
+//        int count = 0;
+//        for (Person person : collection){
+//            if (person.getLocation().compare(location)){
+//                count++;
+//            }
+//        }
+//        return count;
     }
 
     /**
@@ -199,9 +219,10 @@ public class CollectionManager {
      * @return отсортированная коллекция
      */
     public Queue<Person> sortByLocation(){
-        Queue<Person> collection1 = new PriorityQueue<>(1,new LocationComporator());
-        collection1.addAll(collection);
-        return collection1;
+        return collection.stream().sorted(new LocationComporator()).collect(Collectors.toCollection(PriorityQueue<Person> :: new));
+//        Queue<Person> collection1 = new PriorityQueue<>(1,new LocationComporator());
+//        collection1.addAll(collection);
+//        return collection1;
     }
 
     /**
@@ -210,11 +231,12 @@ public class CollectionManager {
      * @return коллекция с элементами
      */
     public Queue<Person> filterLessThanEyeColor(ColorE eyeColor){
-        Queue<Person> collection1 = new PriorityQueue<>(1,new PersonComporator());
-        for (Person person : collection){
-            if (person.getEyeColor().compareTo(eyeColor)<0){
-                collection1.add(person);
-            }
-        }return collection1;
+        return collection.stream().filter(person -> person.getEyeColor().compareTo(eyeColor)<0).collect(Collectors.toCollection(PriorityQueue<Person>::new));
+//        Queue<Person> collection1 = new PriorityQueue<>(1,new PersonComporator());
+//        for (Person person : collection){
+//            if (person.getEyeColor().compareTo(eyeColor)<0){
+//                collection1.add(person);
+//            }
+//        }return collection1;
     }
 }
