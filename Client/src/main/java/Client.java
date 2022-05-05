@@ -11,7 +11,6 @@ public class Client {
     public static Scanner scanner;
     public static void main(String[] args) throws IOException {
         DatagramChannel client = DatagramChannel.open();
-        client.socket().setSoTimeout(1000);
         InetSocketAddress reciever = new InetSocketAddress("localhost",4584);
         scanner = new Scanner(in);
         sendManager = new SendManager(reciever,client);

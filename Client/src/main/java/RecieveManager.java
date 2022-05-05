@@ -15,16 +15,19 @@ public class RecieveManager {
         this.datagramChannel=datagramChannel;
     }
 
-    public Answer recieve() throws IOException, ClassNotFoundException, SocketTimeoutException {
+    public Answer recieve() throws IOException, ClassNotFoundException {
         //ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
         byte[] buffer = new byte[1024*1024];
         DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
+        datagramChannel.socket().setSoTimeout(1000);
         datagramChannel.socket().receive(datagramPacket);
-        ByteBuffer byteBuffer = ByteBuffer.wrap(datagramPacket.getData());
-        byteBuffer.flip();
-        int limits = byteBuffer.limit();
-        byte[] bytes = new byte[limits];
-        byteBuffer.get(bytes,0,limits);
+        //ByteBuffer byteBuffer = ByteBuffer.wrap(datagramPacket.getData());
+        //System.out.println(byteBuffer);
+        //byteBuffer.flip();
+        //int limits = byteBuffer.limit();
+        //byte[] bytes = new byte[limits];
+        //byteBuffer.get(bytes,0,limits);
+        byte[] bytes = datagramPacket.getData();
         Answer answer = (Answer) deserialize(bytes);
         return answer;
     }
