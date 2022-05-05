@@ -15,7 +15,7 @@ public class Client {
         scanner = new Scanner(in);
         sendManager = new SendManager(reciever,client);
         recieveManager = new RecieveManager(client);
-        ClientManager clientManager = new ClientManager();
+        ClientManager clientManager = new ClientManager(sendManager,recieveManager);
         clientManager.consoleMode();
         client.close();
     }

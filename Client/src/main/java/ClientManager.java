@@ -28,8 +28,12 @@ public class ClientManager {
     private boolean ifConsole;
     private ClientCommandManager clientCommandManager;
     private Deque<String> scriptQueue = new LinkedList<>();
+    private SendManager sendManager;
+    private RecieveManager recieveManager;
 
-    public ClientManager() {
+    public ClientManager( SendManager sendManager, RecieveManager recieveManager) {
+        this.sendManager=sendManager;
+        this.recieveManager=recieveManager;
         clientCommandManager = new ClientCommandManager(scriptQueue);
     }
 
@@ -53,8 +57,8 @@ public class ClientManager {
                             found = true;
                             Request request = clientCommandManager.execute(new Request(command),ifConsole);
                             if (!request.equals(null)){
-                                Client.sendManager.send(request);
-                                Client.recieveManager.printRecieved();
+                                sendManager.send(request);
+                                recieveManager.printRecieved();
                             }
                             if (com.equals("execute_script")) {
                                 scriptMode();
