@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class ServerCommandManager implements CommandManager {
     private boolean wasErrors=false;
-    private SendManager sendManager;
-    private CollectionManager collectionManager;
+    private final SendManager sendManager;
+    private final CollectionManager collectionManager;
 
     public ServerCommandManager(SendManager sendManager,CollectionManager collectionManager){
         this.sendManager=sendManager;
@@ -27,7 +27,6 @@ public class ServerCommandManager implements CommandManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             } else if (command.getName().equals("info")) {
                 try {
                     sendManager.sendAnswer(infoCommand(), wasErrors);
