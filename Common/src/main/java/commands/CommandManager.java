@@ -1,7 +1,8 @@
 package commands;
 
+import Messages.Message;
 import Messages.Request;
 
 public interface CommandManager {
-    Object execute(Request request, boolean argument);
+    Message execute(Request request, boolean argument);
 }

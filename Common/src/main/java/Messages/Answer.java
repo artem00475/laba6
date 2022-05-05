@@ -2,7 +2,7 @@ package Messages;
 
 import java.io.Serializable;
 
-public class Answer implements Serializable {
+public class Answer extends Message implements Serializable {
     private String string;
     private boolean wasErrors;
 
