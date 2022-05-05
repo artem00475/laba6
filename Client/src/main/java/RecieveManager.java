@@ -3,6 +3,8 @@ import Messages.Answer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.DatagramPacket;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
@@ -13,13 +15,16 @@ public class RecieveManager {
         this.datagramChannel=datagramChannel;
     }
 
-    public Answer recieve() throws IOException, ClassNotFoundException {
-        ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
-        datagramChannel.receive(buffer);
-        buffer.flip();
-        int limits = buffer.limit();
+    public Answer recieve() throws IOException, ClassNotFoundException, SocketTimeoutException {
+        //ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
+        byte[] buffer = new byte[1024*1024];
+        DatagramPacket datagramPacket = new DatagramPacket(buffer,buffer.length);
+        datagramChannel.socket().receive(datagramPacket);
+        ByteBuffer byteBuffer = ByteBuffer.wrap(datagramPacket.getData());
+        byteBuffer.flip();
+        int limits = byteBuffer.limit();
         byte[] bytes = new byte[limits];
-        buffer.get(bytes,0,limits);
+        byteBuffer.get(bytes,0,limits);
         Answer answer = (Answer) deserialize(bytes);
         return answer;
     }

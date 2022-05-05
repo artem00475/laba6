@@ -1,4 +1,5 @@
 import commands.*;
+import exceptions.ConnectionException;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -56,9 +57,12 @@ public class ClientManager {
                             }
                         }
                     }
-                } catch (NoSuchElementException e) {
+                }catch (NoSuchElementException e) {
                     Client.scanner = new Scanner(System.in);
                     System.out.println("Вы вышли из ввода команды команды");
+                }catch (ConnectionException e){
+                    System.out.println("Завершение работы программы... Проверьте соединение");
+                    break;
                 }
                 if (!found) {
                     System.out.println("Команда введениа неверно, или такой команды не существует");

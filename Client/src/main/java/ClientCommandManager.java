@@ -1,10 +1,12 @@
 import Messages.Request;
 import commands.Command;
 import commands.CommandManager;
+import exceptions.ConnectionException;
 import person.Location;
 import person.Person;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Deque;
 
 public class ClientCommandManager implements CommandManager {
@@ -76,10 +78,15 @@ public class ClientCommandManager implements CommandManager {
         public void recieve() {
             try {
                 System.out.println(Client.recieveManager.recieve().getString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            }catch (SocketTimeoutException e) {
+                    System.out.println("Сервер не отвечает, повторная попытка получения ответа...");
+                    try {
+                        System.out.println(Client.recieveManager.recieve().getString());
+                    }catch (IOException | ClassNotFoundException exception){
+                        throw new ConnectionException("Сервер не отвечает");
+                    }
+            } catch (IOException | ClassNotFoundException e){
+                throw new ConnectionException("Что-то пошло не так");
             }
-        }
+            }
     }
