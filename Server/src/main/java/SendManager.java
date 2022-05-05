@@ -16,11 +16,12 @@ public class SendManager {
         this.recieveManager=recieveManager;
     }
 
-    public void sendAnswer(String string, boolean wasErrors) throws IOException {
-        Answer answer = new Answer(string,wasErrors);
-        buffer = serialize(answer);
-        DatagramPacket output = new DatagramPacket(buffer,buffer.length,recieveManager.getAdress(),recieveManager.getPort());
-        datagramSocket.send(output);
+    public void sendAnswer(Answer answer) {
+        try {
+            buffer = serialize(answer);
+            DatagramPacket output = new DatagramPacket(buffer, buffer.length, recieveManager.getAdress(), recieveManager.getPort());
+            datagramSocket.send(output);
+        }catch (IOException e){}
     }
 
     public byte[] serialize(Object obj) throws IOException {

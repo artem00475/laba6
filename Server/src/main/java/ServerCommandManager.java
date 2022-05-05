@@ -1,3 +1,4 @@
+import Messages.Answer;
 import Messages.Request;
 import collection.CollectionManager;
 import commands.Command;
@@ -6,101 +7,45 @@ import person.ColorE;
 import person.Location;
 import person.Person;
 
-import java.io.IOException;
-
 public class ServerCommandManager implements CommandManager {
     private boolean wasErrors=false;
-    private final SendManager sendManager;
     private final CollectionManager collectionManager;
 
-    public ServerCommandManager(SendManager sendManager,CollectionManager collectionManager){
-        this.sendManager=sendManager;
+    public ServerCommandManager(CollectionManager collectionManager){
         this.collectionManager=collectionManager;
     }
 
-    public void execute(Request request,boolean argument) {
+    public Answer execute(Request request, boolean argument) {
         Command command = request.getCommand();
         if (!command.hasArgement()) {
             if (command.getName().equals("help")) {
-                try {
-                    sendManager.sendAnswer(helpCommand(), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(helpCommand(), wasErrors);
             } else if (command.getName().equals("info")) {
-                try {
-                    sendManager.sendAnswer(infoCommand(), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(infoCommand(),wasErrors);
             } else if (command.getName().equals("show")) {
-                try {
-                    sendManager.sendAnswer(showCommand(), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(showCommand(),wasErrors);
             } else if (command.getName().equals("clear")) {
-                try {
-                    sendManager.sendAnswer(clearCommand(), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(clearCommand(),wasErrors);
             }else if (command.getName().equals("remove_head")){
-                try {
-                    sendManager.sendAnswer(removeHeadCommand(), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else if (command.getName().equals("print_field_ascending_location")){
-                try {
-                    sendManager.sendAnswer(printFieldAscendingLocationCommand(), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(removeHeadCommand(),wasErrors);
+            }else {
+                return new Answer(printFieldAscendingLocationCommand(),wasErrors);
             }
         }else{
             if (command.getName().equals("add")){
-                try {
-                    sendManager.sendAnswer(addCommand((Person) request.getObject()), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(addCommand((Person) request.getObject()), wasErrors);
             }else if (command.getName().equals("add_if_max")){
-                try {
-                    sendManager.sendAnswer(addIfMaxCommand((Person) request.getObject()), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(addIfMaxCommand((Person) request.getObject()), wasErrors);
             }else if (command.getName().equals("remove_greater")){
-                try {
-                    sendManager.sendAnswer(removeGreaterCommand((Person) request.getObject()), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(removeGreaterCommand((Person) request.getObject()), wasErrors);
             }else if (command.getName().equals("remove_by_id")){
-                try {
-                    sendManager.sendAnswer(removeByIdCommand(request.getId()), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(removeByIdCommand(request.getId()), wasErrors);
             }else if (command.getName().equals("update id")){
-                try {
-                    sendManager.sendAnswer(updateCommand(request.getId(), (Person) request.getObject()), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(updateCommand(request.getId(), (Person) request.getObject()), wasErrors);
             }else if (command.getName().equals("count_greater_than_location")){
-                try {
-                    sendManager.sendAnswer(countGreaterThanLocationCommand((Location) request.getObject()), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else if (command.getName().equals("filter_less_than_eye_color")){
-                try {
-                    sendManager.sendAnswer(filterLessThanEyeColorCommand((ColorE) request.getObject()), wasErrors);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                return new Answer(countGreaterThanLocationCommand((Location) request.getObject()), wasErrors);
+            }else {
+                return new Answer(filterLessThanEyeColorCommand((ColorE) request.getObject()), wasErrors);
             }
         }
     }

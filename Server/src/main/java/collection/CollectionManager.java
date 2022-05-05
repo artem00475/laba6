@@ -1,6 +1,7 @@
 package collection;
 
 
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import file.FileManager;
 import person.*;
 
@@ -12,6 +13,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.function.DoubleToIntFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -150,6 +152,7 @@ public class CollectionManager {
      */
     public void saveCollection() {
         fileManager.saveToFile(collection);
+        System.out.println("Коллекция сохранена");
     }
 
     /**
