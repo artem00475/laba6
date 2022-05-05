@@ -47,8 +47,7 @@ public class ClientManager {
             } catch (NoSuchElementException e) {
                 System.out.println("\nВы вышли из программы");
                 break;
-            }
-            if (com.equals("exit")) {
+            } if (com.equals("exit")) {
                 break;
             } else {
                 try {
@@ -59,8 +58,7 @@ public class ClientManager {
                             if (!request.equals(null)){
                                 sendManager.send(request);
                                 recieveManager.printRecieved();
-                            }
-                            if (com.equals("execute_script")) {
+                            } if (com.equals("execute_script")) {
                                 scriptMode();
                                 ifConsole = true;
                             }
@@ -72,8 +70,7 @@ public class ClientManager {
                 }catch (ConnectionException e){
                     System.out.println("Завершение работы программы... Проверьте соединение");
                     break;
-                }
-                if (!found) {
+                } if (!found) {
                     System.out.println("Команда введениа неверно, или такой команды не существует");
                 }
             }

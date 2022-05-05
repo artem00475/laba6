@@ -1,10 +1,8 @@
 import Messages.Request;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -20,14 +18,10 @@ public class SendManager {
     public void send(Request request){
         try {
             buff = serialize(request);
-            //DatagramPacket datagramPacket = new DatagramPacket(buff,buff.length,inetSocketAddress);
             datagramChannel.send(ByteBuffer.wrap(buff),inetSocketAddress);
-            //datagramChannel.socket().send(datagramPacket);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public byte[] serialize(Serializable mess) throws IOException {

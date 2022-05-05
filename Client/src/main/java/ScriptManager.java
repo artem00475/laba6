@@ -239,19 +239,16 @@ public class ScriptManager {
         String scanned = stringDeque.remove();
         if (scanned.isEmpty()) {
             throw new IdException("Ничего не введено");
-        }
-        try {
+        } try {
             id = Integer.parseInt(scanned);
         } catch (NumberFormatException e) {
             throw new IdException("Введено нечисловое значение");
-        }
-        if (!Person.getIdArray().contains(id)){
+        } if (!Person.getIdArray().contains(id)){
             throw new IdException("Элемента с таким id нет в коллекции");
-        }
-        return id;
+        } return id;
     }
 
-    public File getFile(){
+    public File getFile() {
         String path = stringDeque.remove();
         if (path.isEmpty()){throw new FileException("Ничего не введено");}
         File file = new File(path);
