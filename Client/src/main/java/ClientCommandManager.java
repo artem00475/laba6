@@ -1,49 +1,32 @@
 import Messages.Request;
 import commands.Command;
 import commands.CommandManager;
-import exceptions.ConnectionException;
-import person.Location;
-import person.Person;
-
-import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.util.Deque;
 
 public class ClientCommandManager implements CommandManager {
     ConsoleManager consoleManager = new ConsoleManager();
-    private ScriptManager scriptManager;
-
+    private final ScriptManager scriptManager;
 
     public ClientCommandManager(Deque<String> stringDeque) {
         scriptManager = new ScriptManager(stringDeque);
     }
 
-    public void execute(Request request, boolean ifConsole) {
+    public Request execute(Request request, boolean ifConsole) {
         Command command = request.getCommand();
         if (ifConsole) {
             if (!command.hasArgement()) {
-                Client.sendManager.send(new Request(command));
-                recieve();
+                return new Request(command);
             } else {
                 if (command.getName().equals("add") || command.getName().equals("add_if_max") || command.getName().equals("remove_greater")) {
-                    Person person = consoleManager.getPersonFromConsole(Client.scanner);
-                    Client.sendManager.send(new Request(command, person));
-                    recieve();
+                    return new Request(command,consoleManager.getPersonFromConsole(Client.scanner));
                 } else if (command.getName().equals("remove_by_id")) {
-                    Client.sendManager.send(new Request(command, consoleManager.getID(Client.scanner)));
-                    recieve();
+                    return new Request(command,consoleManager.getID(Client.scanner));
                 } else if (command.getName().equals("update id")) {
-                    int argument = consoleManager.getID(Client.scanner);
-                    Person person = consoleManager.getPersonFromConsole(Client.scanner);
-                    Client.sendManager.send(new Request(command, argument, person));
-                    recieve();
+                    return new Request(command,consoleManager.getID(Client.scanner),consoleManager.getPersonFromConsole(Client.scanner));
                 } else if (command.getName().equals("count_greater_than_location")) {
-                    Location location = consoleManager.getLocationFromConsole(Client.scanner);
-                    Client.sendManager.send(new Request(command, location));
-                    recieve();
+                    return new Request(command,consoleManager.getLocationFromConsole(Client.scanner));
                 } else if (command.getName().equals("filter_less_than_eye_color")) {
-                    Client.sendManager.send(new Request(command, consoleManager.getEyeColor(Client.scanner)));
-                    recieve();
+                    return new Request(command,consoleManager.getEyeColor(Client.scanner));
                 } else if (command.getName().equals("execute_script")) {
                     scriptManager.createScriptFlesArray();
                     scriptManager.addFile(consoleManager.getFile(Client.scanner));
@@ -51,42 +34,18 @@ public class ClientCommandManager implements CommandManager {
             }
         } else {
             if (command.getName().equals("add") || command.getName().equals("add_if_max") || command.getName().equals("remove_greater")) {
-                Person person = scriptManager.getPersonFromScript();
-                Client.sendManager.send(new Request(command, person));
-                recieve();
+                return new Request(command,scriptManager.getPersonFromScript());
             }else if (command.getName().equals("remove_by_id")) {
-                Client.sendManager.send(new Request(command,scriptManager.getID()));
-                recieve();
+                return new Request(command,scriptManager.getID());
             }else if (command.getName().equals("update id")) {
-                int argument = scriptManager.getID();
-                Person person = scriptManager.getPersonFromScript();
-                Client.sendManager.send(new Request(command, argument, person));
-                recieve();
+                return new Request(command,scriptManager.getID(),scriptManager.getPersonFromScript());
             }else if (command.getName().equals("count_greater_than_location")) {
-                Location location = scriptManager.getLocationFromScript();
-                Client.sendManager.send(new Request(command, location));
-                recieve();
+                return new Request(command,scriptManager.getLocationFromScript());
             }else if (command.getName().equals("filter_less_than_eye_color")) {
-                Client.sendManager.send(new Request(command, scriptManager.getEyeColor()));
-                recieve();
+                return new Request(command,scriptManager.getEyeColor());
             }else if (command.getName().equals("execute_script")) {
                 scriptManager.addFile(scriptManager.getFile());
             }
-        }
+        }return null;
     }
-
-        public void recieve() {
-            try {
-                System.out.println(Client.recieveManager.recieve().getString());
-            }catch (SocketTimeoutException e) {
-                    System.out.println("Сервер не отвечает, повторная попытка получения ответа...");
-                    try {
-                        System.out.println(Client.recieveManager.recieve().getString());
-                    }catch (IOException | ClassNotFoundException exception){
-                        throw new ConnectionException("Сервер не отвечает");
-                    }
-            } catch (IOException | ClassNotFoundException e){
-                throw new ConnectionException("Что-то пошло не так");
-            }
-            }
-    }
+}

@@ -1,3 +1,4 @@
+import Messages.Request;
 import commands.*;
 import exceptions.ConnectionException;
 
@@ -50,7 +51,11 @@ public class ClientManager {
                     for (Command command : commands) {
                         if (com.equals(command.getName())) {
                             found = true;
-                            command.execute(ifConsole, clientCommandManager);
+                            Request request = clientCommandManager.execute(new Request(command),ifConsole);
+                            if (!request.equals(null)){
+                                Client.sendManager.send(request);
+                                Client.recieveManager.printRecieved();
+                            }
                             if (com.equals("execute_script")) {
                                 scriptMode();
                                 ifConsole = true;

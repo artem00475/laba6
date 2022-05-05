@@ -17,5 +17,6 @@ public class Client {
         recieveManager = new RecieveManager(client);
         ClientManager clientManager = new ClientManager();
         clientManager.consoleMode();
+        client.close();
     }
 }
