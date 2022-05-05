@@ -127,12 +127,11 @@ public class ServerCommandManager implements CommandManager {
     }
 
     public String infoCommand(){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Информация о коллекции:\n");
-        stringBuilder.append("Коллекция типа PriorityQueue, в которой хранятся объекты класса Person\n");
-        stringBuilder.append("Дата инициализации: "+collectionManager.getInitDate()+"\n");
-        stringBuilder.append("Количестов элементов: "+collectionManager.getCollection().size()+"\n");
-        return stringBuilder.toString();
+        String stringBuilder = "Информация о коллекции:\n" +
+                "Коллекция типа PriorityQueue, в которой хранятся объекты класса Person\n" +
+                "Дата инициализации: " + collectionManager.getInitDate() + "\n" +
+                "Количестов элементов: " + collectionManager.getCollection().size() + "\n";
+        return stringBuilder;
     }
 
     public String showCommand(){
@@ -141,9 +140,10 @@ public class ServerCommandManager implements CommandManager {
             stringBuilder.append("Нельзя выполнить команду show: коллекция пустая\n");
         } else {
             stringBuilder.append("Все элементы коллекции: \n");
-            for (Person person : collectionManager.getCollection()) {
-                stringBuilder.append(person+"\n");
-            }
+            collectionManager.getCollection().forEach(person -> stringBuilder.append(person).append("\n"));
+//            for (Person person : collectionManager.getCollection()) {
+//                stringBuilder.append(person+"\n");
+//            }
         }
         return stringBuilder.toString();
     }
@@ -165,10 +165,10 @@ public class ServerCommandManager implements CommandManager {
         StringBuilder stringBuilder = new StringBuilder();
         if (collectionManager.getCollection().isEmpty()) {
             return "Коллекция пуста";
-        } else {
-            for (Person person : collectionManager.sortByLocation()){
-                stringBuilder.append(person.getLocation()+"\n");
-            }
+        } else {collectionManager.sortByLocation().forEach(person -> stringBuilder.append(person.getLocation()).append("\n"));
+//            for (Person person : collectionManager.sortByLocation()){
+//                stringBuilder.append(person.getLocation()+"\n");
+//            }
         }return stringBuilder.toString();
     }
 
