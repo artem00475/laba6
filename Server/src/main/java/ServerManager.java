@@ -4,6 +4,7 @@ import collection.CollectionManager;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ServerManager {
@@ -34,7 +35,7 @@ public class ServerManager {
                         byte[] bytes = new byte[4];
                         System.in.read(bytes);
                         if(bytes.length==4) {
-                            String com= new String(bytes);
+                            String com= new String(bytes).toLowerCase(Locale.ROOT);
                             if (com.equals("exit")) {
                                 break;
                             } else if (com.equals("save")) {

@@ -2,10 +2,7 @@ import Messages.Request;
 import commands.*;
 import exceptions.ConnectionException;
 
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 public class ClientManager {
     private Command[] commands = {
@@ -43,7 +40,7 @@ public class ClientManager {
             boolean found = false;
             System.out.print("Введите команду (help - список команд): ");
             try {
-                com = Client.scanner.nextLine();
+                com = Client.scanner.nextLine().toLowerCase(Locale.ROOT);
             } catch (NoSuchElementException e) {
                 System.out.println("\nВы вышли из программы");
                 break;
@@ -79,7 +76,7 @@ public class ClientManager {
     public void scriptMode() {
         ifConsole = false;
         while (!scriptQueue.isEmpty()) {
-            String com = scriptQueue.removeFirst();
+            String com = scriptQueue.removeFirst().toLowerCase(Locale.ROOT);
             if (com.equals("stop")) {
                 System.out.println("Скрипт выполнен");
                 break;
