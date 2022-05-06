@@ -12,14 +12,12 @@ public class ServerManager {
     private RecieveManager recieveManager;
     private CollectionManager collectionManager;
     private ServerCommandManager serverCommandManager;
-    private Scanner scanner;
 
     public ServerManager(SendManager sendManager,RecieveManager recieveManager, CollectionManager collectionManager){
         this.collectionManager=collectionManager;
         this.recieveManager=recieveManager;
         this.sendManager=sendManager;
         serverCommandManager = new ServerCommandManager(collectionManager);
-        scanner = new Scanner(System.in);
     }
 
     public void run() {
@@ -37,6 +35,7 @@ public class ServerManager {
                         if(bytes.length==4) {
                             String com= new String(bytes).toLowerCase(Locale.ROOT);
                             if (com.equals("exit")) {
+                                collectionManager.saveCollection();
                                 break;
                             } else if (com.equals("save")) {
                                 collectionManager.saveCollection();
