@@ -55,10 +55,10 @@ public class ClientManager {
                         if (com.equals(command.getName())) {
                             found = true;
                             Request request = clientCommandManager.execute(new Request(command),ifConsole);
-                            if (!request.equals(null)){
+                            if (request != null){
                                 sendManager.send(request);
                                 recieveManager.printRecieved();
-                            } if (com.equals("execute_script")) {
+                            }if (com.equals("execute_script")) {
                                 scriptMode();
                                 ifConsole = true;
                             }
@@ -68,8 +68,7 @@ public class ClientManager {
                     Client.scanner = new Scanner(System.in);
                     System.out.println("Вы вышли из ввода команды команды");
                 }catch (ConnectionException e){
-                    System.out.println("Завершение работы программы... Проверьте соединение");
-                    break;
+                    System.out.println("Повторите попытку позже");
                 } if (!found) {
                     System.out.println("Команда введениа неверно, или такой команды не существует");
                 }
@@ -87,10 +86,14 @@ public class ClientManager {
             } else {
                 for (Command command : commands) {
                     if (com.equals(command.getName())) {
+                        Request request;
                         if (!command.hasArgement()) {
-                            command.execute(true,clientCommandManager);
+                            request = clientCommandManager.execute(new Request(command),true);
                         } else {
-                            command.execute(ifConsole,clientCommandManager);
+                            request =  clientCommandManager.execute(new Request(command),ifConsole);
+                        }if (request != null) {
+                            sendManager.send(request);
+                            recieveManager.printRecieved();
                         }
                     }
                 }

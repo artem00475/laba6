@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * Класс, описывающий человека
  * Объекты класса являются элементами коллекции
  */
-public class Person implements Serializable {
+public class Person implements Serializable,Comparable<Person> {
     private static Integer uniqueID=1;
     private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -239,6 +239,10 @@ public class Person implements Serializable {
      */
     public static void removeAllFromIdArray(){idArray.clear();}
 
+    @Override
+    public int compareTo(Person person) {
+        return this.name.compareTo(person.getName());
     }
+}
 
 

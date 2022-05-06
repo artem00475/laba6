@@ -27,7 +27,7 @@ public class CollectionManager {
      * Создается коллекция, сохраняется дата создания
      */
     public CollectionManager() throws FileNotFoundException {
-        collection = new PriorityQueue<>(1, new PersonComporator());
+        collection = new PriorityQueue<>();
         initDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss dd.MM.yyyy"));
         this.fileManager= new FileManager();
         File file = new File(scanPath);
@@ -150,7 +150,7 @@ public class CollectionManager {
      * @return {@code true} если нужные элементы есть, иначе {@code false}
      */
     public boolean removeGreater(Person person){
-        return collection.stream().filter(person1 -> person1.getHeight()<person.getHeight()).toArray().length>0;
+        return collection.removeAll(collection.stream().filter(person1 -> person1.getHeight()>person.getHeight()).collect(Collectors.toCollection(PriorityQueue<Person>::new)));
     }
 
     /**

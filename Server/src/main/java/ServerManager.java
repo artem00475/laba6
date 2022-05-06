@@ -26,20 +26,26 @@ public class ServerManager {
             Request request;
             try {
                 request = recieveManager.recieveRequest();
-                sendManager.sendAnswer(serverCommandManager.execute(request, false));
+                Answer answer =  serverCommandManager.execute(request, false);
+                sendManager.sendAnswer(answer);
             }catch (SocketTimeoutException exception){
-                if (scanner.hasNextLine()){
-                    String com = scanner.nextLine();
-                    if (com.equals("exit")){
-                        break;
-                    }else if (com.equals("save")){
-                        collectionManager.saveCollection();
+                try {
+                    if (System.in.available()>0) {
+                        byte[] bytes = new byte[4];
+                        System.in.read(bytes);
+                        if(bytes.length==4) {
+                            String com= new String(bytes);
+                            if (com.equals("exit")) {
+                                break;
+                            } else if (com.equals("save")) {
+                                collectionManager.saveCollection();
+                            }else System.out.println("Комманда введена неверно");
+                        }
                     }
-                }
+                }catch (NullPointerException | IOException e){}
             } catch (IOException | ClassNotFoundException e) {
                 sendManager.sendAnswer(new Answer(null,true));
             }
-
         }
     }
 }
