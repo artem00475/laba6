@@ -1,3 +1,4 @@
+package Script;
 
 import person.*;
 import exceptions.*;

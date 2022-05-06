@@ -23,7 +23,7 @@ public class ClientManager {
     };
     private String com;
     private boolean ifConsole;
-    private ClientCommandManager clientCommandManager;
+    private ConsoleCommandManager clientCommandManager;
     private Deque<String> scriptQueue = new LinkedList<>();
     private SendManager sendManager;
     private RecieveManager recieveManager;
@@ -31,7 +31,7 @@ public class ClientManager {
     public ClientManager( SendManager sendManager, RecieveManager recieveManager) {
         this.sendManager=sendManager;
         this.recieveManager=recieveManager;
-        clientCommandManager = new ClientCommandManager(scriptQueue);
+        clientCommandManager = new ConsoleCommandManager(scriptQueue,Client.scanner);
     }
 
     public void consoleMode() {
@@ -63,6 +63,7 @@ public class ClientManager {
                     }
                 }catch (NoSuchElementException e) {
                     Client.scanner = new Scanner(System.in);
+                    clientCommandManager = new ConsoleCommandManager(scriptQueue,Client.scanner);
                     System.out.println("Вы вышли из ввода команды команды");
                 }catch (ConnectionException e){
                     System.out.println("Повторите попытку позже");

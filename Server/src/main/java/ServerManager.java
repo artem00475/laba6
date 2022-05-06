@@ -5,6 +5,7 @@ import collection.CollectionManager;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ServerManager {
@@ -12,40 +13,51 @@ public class ServerManager {
     private RecieveManager recieveManager;
     private CollectionManager collectionManager;
     private ServerCommandManager serverCommandManager;
+    private ServerConsoleCommandManager serverConsoleCommandManager;
+    private Scanner scanner;
 
     public ServerManager(SendManager sendManager,RecieveManager recieveManager, CollectionManager collectionManager){
         this.collectionManager=collectionManager;
         this.recieveManager=recieveManager;
         this.sendManager=sendManager;
         serverCommandManager = new ServerCommandManager(collectionManager);
+        scanner = new Scanner(System.in);
+        serverConsoleCommandManager = new ServerConsoleCommandManager(scanner,serverCommandManager);
     }
 
     public void run() {
-        while (true){
-            Request request;
+        while (true) {
             try {
-                request = recieveManager.recieveRequest();
-                Answer answer =  serverCommandManager.execute(request, false);
-                sendManager.sendAnswer(answer);
-            }catch (SocketTimeoutException exception){
+                Request request;
                 try {
-                    if (System.in.available()>0) {
-                        byte[] bytes = new byte[4];
-                        System.in.read(bytes);
-                        if(bytes.length==4) {
-                            String com= new String(bytes).toLowerCase(Locale.ROOT);
+                    request = recieveManager.recieveRequest();
+                    Answer answer = serverCommandManager.execute(request, false);
+                    sendManager.sendAnswer(answer);
+                } catch (SocketTimeoutException exception) {
+                    try {
+                        if (System.in.available() > 0) {
+                            String com = scanner.nextLine().toLowerCase(Locale.ROOT);
                             if (com.equals("exit")) {
                                 collectionManager.saveCollection();
                                 break;
                             } else if (com.equals("save")) {
                                 collectionManager.saveCollection();
-                            }else System.out.println("Комманда введена неверно");
+                            } else {
+                                try {
+                                    serverConsoleCommandManager.run(com);
+                                }catch (NoSuchElementException e){
+                                    System.out.println("Вы вышли из ввода команды");
+                                    scanner = new Scanner(System.in);
+                                    serverConsoleCommandManager = new ServerConsoleCommandManager(scanner,serverCommandManager);
+                                }
+                            }
                         }
+                    } catch (NullPointerException | IOException e) {
                     }
-                }catch (NullPointerException | IOException e){}
-            } catch (IOException | ClassNotFoundException e) {
-                sendManager.sendAnswer(new Answer(null,true));
-            }
+                } catch (IOException | ClassNotFoundException e) {
+                    sendManager.sendAnswer(new Answer(null, true));
+                }
+            }catch (NoSuchElementException e){break;}
         }
     }
 }
